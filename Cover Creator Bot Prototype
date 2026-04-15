@@ -1,0 +1,52 @@
+Problem Statement: Amateur singers who post cover songs on TikTok struggle to build a cohesive, visually appealing presence — especially when posting anonymously. There's no easy way to quickly generate a consistent aesthetic, matching captions, and hashtag strategy for each cover post without spending hours on research and design. Cover Creator Studio solves this by letting a user describe a song or vibe and instantly receive a tailored creative package for their TikTok post.
+
+
+Target User: A college-aged, creative individual who:
+- Records and posts song covers on TikTok (anonymously or otherwise)
+- Uses tools like GarageBand to produce their audio
+- Has a graphic design eye but wants faster output
+- Wants their TikTok page to feel cohesive and intentional without a huge time investment
+- Is building a personal brand around music without necessarily revealing their identity
+
+
+MUST HAVES (MVP — v1):
+1. Song & Vibe Input
+
+A simple input form where the user enters:
+- Song title and original artist
+- Their intended mood or spin on the cover (e.g., "soft and emotional," "upbeat and fun," "dark and moody")
+
+2. Aesthetic Mood Board Generator
+
+Based on the song and vibe input, the app returns:
+- A color palette (3–5 hex colors that match the vibe)
+- A vibe description (2–3 sentences describing the visual mood)
+- Font style suggestions (e.g., "handwritten and soft" or "bold and editorial")
+- Visual direction tip (e.g., "think warm candlelight, close-up shots, minimal movement")
+
+3. TikTok Caption & Hashtag Generator
+The app returns a ready-to-use TikTok post package:
+
+- A short, engaging caption (fits TikTok's style — punchy, relatable, no fluff)
+- 10–15 relevant hashtags (mix of niche and broad for reach)
+- An optional anonymous-friendly CTA (e.g., "drop your favorite lyric below 👇")
+
+
+USER INTERACTION:
+1. User lands on the app homepage
+        ↓
+2. User fills out the input form:
+   - Song title + original artist
+   - Their mood/spin on the cover
+        ↓
+3. User clicks "Generate My Vibe"
+        ↓
+4. AI processes the input and returns:
+   - Mood board (color palette + vibe description + font tips + visual direction)
+   - TikTok caption + hashtags + CTA
+        ↓
+5. User reviews output on a clean results screen
+        ↓
+6. User copies what they need and posts their cover
+        ↓
+7. Optional: User clicks "Start Over" to generate for a new song
