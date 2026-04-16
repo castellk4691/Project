@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cover Creator Studio | TikTok Aesthetic Generator</title>
+    <style>
+        /* --- CSS STYLES --- */
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --accent-primary: #8b5cf6;
+            --accent-secondary: #ec4899;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at top right, #1e1b4b, #0f172a);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin: 0;
+            background: linear-gradient(to right, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p.subtitle {
+            color: var(--text-dim);
+            margin-top: 10px;
+        }
+
+        /* Form Styles */
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-secondary);
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 14px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        /* Results Screen Styles */
+        #results {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+            margin: 30px 0 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .mood-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 16px;
+        }
+
+        /* Color Palette Display */
+        .palette {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .swatch {
+            height: 40px;
+            flex-grow: 1;
+            border-radius: 8px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        /* Copy Buttons */
+        .copy-box {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            position: relative;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .secondary-btn {
+            background: transparent;
+            border: 1px solid var(--text-dim);
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 600px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="setup-screen">
+        <header>
+            <h1>Cover Creator Studio</h1>
+            <p class="subtitle">Fast-track your TikTok aesthetic in seconds.</p>
+        </header>
+
+        <div class="input-group">
+            <label for="song-info">Song Title & Artist</label>
+            <input type="text" id="song-info" placeholder="e.g. 'Cruel Summer' by Taylor Swift">
+        </div>
+
+        <div class="input-group">
+            <label for="vibe-info">Describe the Vibe</label>
+            <textarea id="vibe-info" rows="3" placeholder="e.g. Moody piano version, late night rainy vibes, or upbeat acoustic."></textarea>
+        </div>
+
+        <button onclick="generatePackage()">Generate My Vibe</button>
+    </div>
+
+    <div id="results">
+        <header>
+            <h1 id="res-title">Your Creative Package</h1>
+            <p class="subtitle" id="res-subtitle"></p>
+        </header>
+
+        <div class="grid">
+            <div class="mood-card">
+                <label>Color Palette</label>
+                <div class="palette" id="palette-container"></div>
+                
+                <label style="margin-top:20px">Visual Direction</label>
+                <p id="visual-dir" style="font-size: 0.9rem; line-height: 1.5;"></p>
+            </div>
+
+            <div class="mood-card">
+                <label>Font & Typography</label>
+                <p id="font-suggestion" style="font-size: 1.1rem; font-weight: 500;"></p>
+                <label style="margin-top:20px">Mood Description</label>
+                <p id="mood-desc" style="font-size: 0.9rem; color: var(--text-dim);"></p>
+            </div>
+        </div>
+
+        <div class="section-title">✨ TikTok Content</div>
+        
+        <label>Caption</label>
+        <div class="copy-box" id="caption-out"></div>
+        
+        <label style="margin-top:20px">Hashtags</label>
+        <div class="copy-box" id="hashtag-out"></div>
+
+        <button class="secondary-btn" onclick="resetApp()">Start Over</button>
+    </div>
+</div>
+
+<script>
+    /* --- JAVASCRIPT LOGIC --- */
+
+    // Data Library (Simulated AI Logic)
+    const vibeProfiles = {
+        emotional: {
+            colors: ['#2D3250', '#7077A1', '#F6B17A', '#F1E4C3'],
+            font: 'Thin, serif or delicate cursive',
+            visual: 'Soft bokeh lights, warm candlelight, static camera, slight grain overlay.',
+            desc: 'A raw, intimate look that focuses on the vulnerability of the performance.'
+        },
+        dark: {
+            colors: ['#000000', '#1A1A1B', '#3D0000', '#820000'],
+            font: 'Gothic or distorted bold sans-serif',
+            visual: 'High contrast shadows, blue/red backlight, minimal facial visibility (mysterious).',
+            desc: 'An edgy, cinematic aesthetic that prioritizes atmosphere over clarity.'
+        },
+        upbeat: {
+            colors: ['#FF0075', '#17BEBB', '#D62246', '#4B1D3F'],
+            font: 'Bold, rounded, colorful typography',
+            visual: 'Fast cuts, vibrant lighting, active movement, dynamic handheld camera.',
+            desc: 'High energy and engaging. Focuses on the fun and rhythm of the track.'
+        },
+        default: {
+            colors: ['#1e293b', '#6366f1', '#a855f7', '#ec4899'],
+            font: 'Clean, minimalist sans-serif',
+            visual: 'Natural daylight, clean background, center-framed shot, intentional editing.',
+            desc: 'A modern, polished aesthetic that builds a professional personal brand.'
+        }
+    };
+
+    function generatePackage() {
+        const song = document.getElementById('song-info').value;
+        const vibeInput = document.getElementById('vibe-info').value.toLowerCase();
+
+        if (!song || !vibeInput) {
+            alert("Please fill in both fields!");
+            return;
+        }
+
+        // 1. Determine the logic profile
+        let profile = vibeProfiles.default;
+        if (vibeInput.includes('sad') || vibeInput.includes('emotional') || vibeInput.includes('soft')) profile = vibeProfiles.emotional;
+        if (vibeInput.includes('dark') || vibeInput.includes('moody') || vibeInput.includes('night')) profile = vibeProfiles.dark;
+        if (vibeInput.includes('upbeat') || vibeInput.includes('fun') || vibeInput.includes('fast')) profile = vibeProfiles.upbeat;
+
+        // 2. Map data to DOM
+        document.getElementById('res-subtitle').innerText = `${song} (${vibeInput})`;
+        document.getElementById('visual-dir').innerText = profile.visual;
+        document.getElementById('font-suggestion').innerText = profile.font;
+        document.getElementById('mood-desc').innerText = profile.desc;
+
+        // 3. Generate Palette
+        const palCont = document.getElementById('palette-container');
+        palCont.innerHTML = '';
+        profile.colors.forEach(color => {
+            const swatch = document.createElement('div');
+            swatch.className = 'swatch';
+            swatch.style.backgroundColor = color;
+            swatch.title = color;
+            palCont.appendChild(swatch);
+        });
+
+        // 4. Generate Copywriting
+        const cleanSong = song.split('by')[0].trim();
+        document.getElementById('caption-out').innerText = `POV: You're listening to my version of ${cleanSong}. 🎧 \n\nThis song has been stuck in my head all week. Hope you enjoy this little cover. 👇`;
+        
+        const tags = ['#cover', '#singer', '#musician', '#coversong', '#aesthetic', '#unsignedartist', '#tiktokmusic'];
+        const vibeTag = vibeInput.split(' ')[0];
+        document.getElementById('hashtag-out').innerText = tags.map(t => t).join(' ') + ` #${vibeTag}voice #musicvibes`;
+
+        // 5. Switch Screens
+        document.getElementById('setup-screen').style.display = 'none';
+        document.getElementById('results').style.display = 'block';
+    }
+
+    function resetApp() {
+        document.getElementById('song-info').value = '';
+        document.getElementById('vibe-info').value = '';
+        document.getElementById('setup-screen').style.display = 'block';
+        document.getElementById('results').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>
