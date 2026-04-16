@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cover Creator Studio</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 700px;
+      width: 100%;
+      padding: 30px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: #1e293b;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: #6366f1;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #4f46e5;
+    }
+
+    .palette {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .color-box {
+      width: 50px;
+      height: 50px;
+      border-radius: 6px;
+    }
+
+    .output-section {
+      margin-top: 20px;
+    }
+
+    .copy-btn {
+      margin-top: 10px;
+      background: #10b981;
+    }
+
+    .copy-btn:hover {
+      background: #059669;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🎧 Cover Creator Studio</h1>
+
+  <!-- INPUT FORM -->
+  <div class="card" id="inputCard">
+    <label>Song Title + Artist</label>
+    <input type="text" id="songInput" placeholder="e.g. 'Fix You - Coldplay'">
+
+    <label>Vibe / Mood</label>
+    <textarea id="vibeInput" placeholder="e.g. soft and emotional"></textarea>
+
+    <button onclick="generate()">Generate My Vibe</button>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="card hidden" id="resultCard">
+    <h2>🎨 Mood Board</h2>
+
+    <div class="output-section">
+      <strong>Color Palette:</strong>
+      <div class="palette" id="palette"></div>
+    </div>
+
+    <div class="output-section">
+      <strong>Vibe Description:</strong>
+      <p id="vibeDesc"></p>
+    </div>
+
+    <div class="output-section">
+      <strong>Font Style:</strong>
+      <p id="fontStyle"></p>
+    </div>
+
+    <div class="output-section">
+      <strong>Visual Direction:</strong>
+      <p id="visualTip"></p>
+    </div>
+
+    <h2>📱 TikTok Package</h2>
+
+    <div class="output-section">
+      <strong>Caption:</strong>
+      <p id="caption"></p>
+    </div>
+
+    <div class="output-section">
+      <strong>Hashtags:</strong>
+      <p id="hashtags"></p>
+    </div>
+
+    <div class="output-section">
+      <strong>CTA:</strong>
+      <p id="cta"></p>
+    </div>
+
+    <button class="copy-btn" onclick="copyAll()">Copy Everything</button>
+    <button style="margin-top:10px;" onclick="reset()">Start Over</button>
+  </div>
+</div>
+
+<script>
+/*
+  MAIN GENERATOR FUNCTION
+  Simulates "AI" by mapping vibe keywords to preset creative outputs
+*/
+function generate() {
+  const song = document.getElementById("songInput").value;
+  const vibe = document.getElementById("vibeInput").value.toLowerCase();
+
+  if (!song || !vibe) {
+    alert("Please fill out both fields.");
+    return;
+  }
+
+  const paletteMap = {
+    soft: ["#fbcfe8", "#e9d5ff", "#fef3c7", "#e0f2fe"],
+    dark: ["#0f172a", "#1e293b", "#334155", "#020617"],
+    upbeat: ["#facc15", "#fb7185", "#34d399", "#60a5fa"],
+    emotional: ["#c4b5fd", "#fda4af", "#93c5fd", "#e5e7eb"],
+    moody: ["#1e1b4b", "#312e81", "#4c1d95", "#111827"]
+  };
+
+  // Pick palette based on keyword match
+  let colors = paletteMap.soft;
+  for (let key in paletteMap) {
+    if (vibe.includes(key)) {
+      colors = paletteMap[key];
+      break;
+    }
+  }
+
+  // Fill palette UI
+  const paletteDiv = document.getElementById("palette");
+  paletteDiv.innerHTML = "";
+  colors.forEach(color => {
+    const div = document.createElement("div");
+    div.className = "color-box";
+    div.style.background = color;
+    paletteDiv.appendChild(div);
+  });
+
+  // Generate vibe description
+  document.getElementById("vibeDesc").innerText =
+    `This cover of "${song}" leans into a ${vibe} aesthetic, creating an intimate and visually cohesive mood that draws viewers in.`;
+
+  // Font suggestions
+  document.getElementById("fontStyle").innerText =
+    vibe.includes("soft") ? "Handwritten, light serif fonts"
+    : vibe.includes("dark") ? "Bold, condensed editorial fonts"
+    : "Clean sans-serif with personality";
+
+  // Visual direction
+  document.getElementById("visualTip").innerText =
+    vibe.includes("emotional") ? "Close-up shots, soft lighting, minimal movement"
+    : vibe.includes("upbeat") ? "Bright lighting, dynamic movement, playful framing"
+    : "Moody lighting, shadows, cinematic angles";
+
+  // Caption generator
+  document.getElementById("caption").innerText =
+    `this one hits different… 🎶 "${song}" but make it ${vibe}`;
+
+  // Hashtags
+  document.getElementById("hashtags").innerText =
+    "#cover #music #singing #fyp #foryou #artistsoftiktok #coverartist #" +
+    vibe.replace(/\s/g, "") + " #musicvibes #indieartist #viral";
+
+  // CTA
+  document.getElementById("cta").innerText =
+    "drop your favorite lyric below 👇";
+
+  // Show results
+  document.getElementById("resultCard").classList.remove("hidden");
+  document.getElementById("inputCard").classList.add("hidden");
+}
+
+/*
+  COPY ALL OUTPUT FUNCTION
+*/
+function copyAll() {
+  const text = `
+Caption:
+${document.getElementById("caption").innerText}
+
+Hashtags:
+${document.getElementById("hashtags").innerText}
+
+CTA:
+${document.getElementById("cta").innerText}
+  `;
+  navigator.clipboard.writeText(text);
+  alert("Copied to clipboard!");
+}
+
+/*
+  RESET APP
+*/
+function reset() {
+  document.getElementById("songInput").value = "";
+  document.getElementById("vibeInput").value = "";
+  document.getElementById("resultCard").classList.add("hidden");
+  document.getElementById("inputCard").classList.remove("hidden");
+}
+</script>
+
+</body>
+</html>
