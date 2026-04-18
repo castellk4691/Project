@@ -20,10 +20,12 @@ It gives singers cover ideas cover for TikTok posts by the user providing the so
 - Privacy-First: Works entirely offline in your browser.
 
 ## Try It Yourself
-[Link to GitHub Pages deployment]
+https://castellk4691.github.io/Project
 
 ## What I Learned
-[Your reflection here]
+I learned that to make something work the way you want it, you really have to go through trial and error and make changes until your satisfied.
 
 ## Future Improvements
-[What you'd add next]
+- Interactive "Copy to Clipboard" for text
+- "TikTok Trend" Matcher: A section that suggests a specific TikTok layout based on the vibe
+- Interactive Color Palette Export
