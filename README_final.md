@@ -1,0 +1,3 @@
+- It gives singers cover ideas cover for TikTok posts by the user providing the song name, artist, and the asthetic/vibe they're going for. The bot gives 2 color palette options, video editing directions, typography suggestion, caption, and a short list of hashtags.
+- I'm 100% done
+- The tool I used was Gemini.
