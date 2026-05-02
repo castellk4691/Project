@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cover Creator Studio | TikTok Aesthetic Generator</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --accent-primary: #8b5cf6;
+            --accent-secondary: #ec4899;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(circle at top right, #1e1b4b, #0f172a);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        header { text-align: center; margin-bottom: 40px; }
+        h1 { font-size: 2.5rem; margin: 0; background: linear-gradient(to right, #a78bfa, #f472b6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p.subtitle { color: var(--text-dim); margin-top: 10px; }
+
+        .input-group { margin-bottom: 25px; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent-secondary); }
+        input, textarea { width: 100%; padding: 14px; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; color: white; font-size: 1rem; box-sizing: border-box; }
+
+        button { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); border: none; border-radius: 12px; color: white; font-weight: bold; font-size: 1.1rem; cursor: pointer; transition: transform 0.2s ease; }
+
+        #results { display: none; animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .mood-card { background: rgba(255, 255, 255, 0.03); padding: 20px; border-radius: 16px; margin-bottom: 20px; }
+        .palette { display: flex; gap: 10px; margin: 15px 0; }
+        .swatch { height: 45px; flex-grow: 1; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
+        .copy-box { background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 12px; font-size: 0.95rem; line-height: 1.5; white-space: pre-wrap; border-left: 4px solid var(--accent-primary); margin-bottom: 20px; }
+        .secondary-btn { background: transparent; border: 1px solid var(--text-dim); margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="setup-screen">
+        <header>
+            <h1>Cover Creator Studio</h1>
+            <p class="subtitle">Personalized aesthetics for your next viral cover.</p>
+        </header>
+
+        <div class="input-group">
+            <label>Song Title & Original Artist</label>
+            <input type="text" id="song-info" placeholder="e.g. 'Flowers' by Miley Cyrus">
+        </div>
+
+        <div class="input-group">
+            <label>The Vibe / Spin</label>
+            <textarea id="vibe-info" rows="3" placeholder="e.g. ethereal, slow and moody, or 90s rock grunge"></textarea>
+        </div>
+
+        <button onclick="generatePackage()">Generate My Vibe</button>
+    </div>
+
+    <div id="results">
+        <div class="mood-card">
+            <label>Visual Identity</label>
+            <div class="palette" id="palette-container"></div>
+            <p id="visual-dir" style="margin-top: 15px; font-size: 0.9rem;"></p>
+            <p id="font-suggestion" style="color: var(--accent-primary); font-weight: bold;"></p>
+        </div>
+
+        <label>Custom Caption</label>
+        <div class="copy-box" id="caption-out"></div>
+        
+        <label>Smart Hashtags</label>
+        <div class="copy-box" id="hashtag-out" style="color: #a78bfa;"></div>
+
+        <button class="secondary-btn" onclick="resetApp()">Start Over</button>
+    </div>
+</div>
+
+<script>
+    const vibeProfiles = {
+        emotional: {
+            colors: ['#2D3250', '#7077A1', '#F6B17A', '#F1E4C3'],
+            font: 'Font: Delicate serif or "handwritten"',
+            visual: 'Visuals: Soft bokeh lights, warm candlelight, static camera, heavy film grain.',
+            tags: ['#sadgirltheory', '#slowedandreverb', '#emotionalvocals', '#bedroompop', '#healingmusic'],
+            templates: [
+                "There's something about [SONG] that just hits differently when it's [VIBE].",
+                "POV: It's 2 AM and you're listening to a [VIBE] version of [SONG].",
+                "Stripping back [SONG] to keep it [VIBE]. 🥀"
+            ]
+        },
+        dark: {
+            colors: ['#000000', '#1A1A1B', '#3D0000', '#820000'],
+            font: 'Font: Gothic or distorted bold sans-serif',
+            visual: 'Visuals: High contrast shadows, blue/red backlight, minimal facial visibility.',
+            tags: ['#darkaesthetic', '#moodymusic', '#cinematiccover', '#altmusic', '#etherealmusic'],
+            templates: [
+                "Bringing a bit of a [VIBE] energy to [SONG]. 🖤",
+                "Does [SONG] sound better as a [VIBE] cover? I think so.",
+                "Entering my [VIBE] era with this [SONG] cover."
+            ]
+        },
+        upbeat: {
+            colors: ['#FF0075', '#17BEBB', '#D62246', '#4B1D3F'],
+            font: 'Font: Bold, rounded, "Pop" typography',
+            visual: 'Visuals: Fast cuts, vibrant lighting, active movement, dynamic camera.',
+            tags: ['#popcovers', '#highvibe', '#morningvibes', '#energyboost', '#singer-songwriter'],
+            templates: [
+                "Had to speed up [SONG] and give it a [VIBE] twist! ✨",
+                "Just a [VIBE] little cover of [SONG] to brighten your feed.",
+                "If [SONG] was a [VIBE] anthem... here's my take!"
+            ]
+        }
+    };
+
+    function generatePackage() {
+        const input = document.getElementById('song-info').value;
+        const vibeInput = document.getElementById('vibe-info').value.toLowerCase();
+
+        if (!input || !vibeInput) return alert("Fill in the blanks!");
+
+        // Logic to extract Song and Artist
+        let songTitle = input;
+        let artistName = "";
+        if (input.toLowerCase().includes('by')) {
+            const parts = input.split(/by/i);
+            songTitle = parts[0].trim();
+            artistName = parts[1].trim();
+        }
+
+        // Determine Vibe Type
+        let type = 'emotional';
+        if (vibeInput.includes('dark') || vibeInput.includes('moody') || vibeInput.includes('grunge') || vibeInput.includes('shadow')) type = 'dark';
+        if (vibeInput.includes('upbeat') || vibeInput.includes('fun') || vibeInput.includes('pop') || vibeInput.includes('fast')) type = 'upbeat';
+        
+        const profile = vibeProfiles[type];
+
+        // 1. Unique Caption
+        const randomTemplate = profile.templates[Math.floor(Math.random() * profile.templates.length)];
+        const finalCaption = randomTemplate.replace('[SONG]', songTitle).replace('[VIBE]', vibeInput);
+        document.getElementById('caption-out').innerText = finalCaption + "\n\nDrop your favorite lyric below 👇";
+
+        // 2. Unique Hashtags
+        const cleanSongTag = `#${songTitle.replace(/\s+/g, '')}`;
+        const cleanArtistTag = artistName ? `#${artistName.replace(/\s+/g, '')}` : '';
+        const uniqueVibeTag = `#${vibeInput.split(' ')[0]}cover`;
+        
+        const baseTags = ['#coversong', '#singing', '#musician'];
+        const combinedTags = [cleanSongTag, cleanArtistTag, uniqueVibeTag, ...profile.tags, ...baseTags]
+            .filter(tag => tag.length > 1) // Remove empty artist tags
+            .slice(0, 12); // Keep it to a clean 12 tags
+
+        document.getElementById('hashtag-out').innerText = combinedTags.join(' ');
+
+        // 3. Visuals & Palette
+        document.getElementById('visual-dir').innerText = profile.visual;
+        document.getElementById('font-suggestion').innerText = profile.font;
+        const pal = document.getElementById('palette-container');
+        pal.innerHTML = '';
+        profile.colors.forEach(c => {
+            const s = document.createElement('div');
+            s.className = 'swatch';
+            s.style.background = c;
+            pal.appendChild(s);
+        });
+
+        document.getElementById('setup-screen').style.display = 'none';
+        document.getElementById('results').style.display = 'block';
+    }
+
+    function resetApp() {
+        document.getElementById('setup-screen').style.display = 'block';
+        document.getElementById('results').style.display = 'none';
+    }
+</script>
+</body>
+</html>
