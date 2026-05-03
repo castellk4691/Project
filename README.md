@@ -21,6 +21,7 @@ It gives singers cover ideas cover for TikTok posts by the user providing the so
 
 ## Try It Yourself
 https://castellk4691.github.io/Project
+(p.s. not the final version because I couldn't figure out how to update the link.)
 
 ## What I Learned
 I learned that to make something work the way you want it, you really have to go through trial and error and make changes until your satisfied.
